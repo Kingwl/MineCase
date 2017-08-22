@@ -13,6 +13,7 @@ namespace MineCase.Server.Game
     internal class GameSession : Grain, IGameSession
     {
         private IWorld _world;
+        private IChunkSender _chunkSender;
         private readonly Dictionary<IUser, UserContext> _users = new Dictionary<IUser, UserContext>();
 
         private IDisposable _gameTick;
@@ -21,6 +22,7 @@ namespace MineCase.Server.Game
         public override async Task OnActivateAsync()
         {
             _world = await GrainFactory.GetGrain<IWorldAccessor>(0).GetWorld(this.GetPrimaryKeyString());
+            _chunkSender = GrainFactory.GetGrain<IChunkSender>(Guid.NewGuid());
             _lastGameTickTime = DateTime.UtcNow;
             _gameTick = RegisterTimer(OnGameTick, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(50));
         }
