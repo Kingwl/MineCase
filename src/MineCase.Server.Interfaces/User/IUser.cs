@@ -38,5 +38,7 @@ namespace MineCase.Server.User
         Task<uint> GetPing();
 
         Task OnGameTick(TimeSpan deltaTime);
+
+        Task SetPacketRouter(IPacketRouter packetRouter);
     }
 }
